@@ -10,4 +10,10 @@ M.print = function(...)
     end
 end
 
+M.warn = function(...)
+    if M.opts.debug then
+        vim.notify("preview-buffer: " .. ..., vim.log.levels.WARN)
+    end
+end
+
 return M
