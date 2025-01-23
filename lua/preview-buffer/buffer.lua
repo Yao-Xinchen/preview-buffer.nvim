@@ -16,6 +16,7 @@ M.setup_autocmd = function()
     augroup preview_buffer
         autocmd!
         autocmd BufAdd * lua require("preview-buffer.buffer").buffer_add_callback()
+        autocmd BufModifiedSet * lua require("preview-buffer.buffer").buffer_modified_callback()
     ]]
     debugging.print("setup_autocmd")
 end
@@ -41,6 +42,11 @@ local function close_preview_buffer()
     current_preview_buffer = "NONE"
 end
 
+local function buffer_is_file(name)
+    local number = vim.fn.bufnr(name)
+    return vim.api.nvim_buf_get_option(number, 'buftype') == ""
+end
+
 --- Callback for when a buffer is added
 --- Close the current preview buffer if it exists
 --- Add the new buffer to the preview buffer
@@ -51,14 +57,25 @@ M.buffer_add_callback = function()
     debugging.print("file being added: " .. new_buffer_name)
 
     -- check if the new buffer is a file
-    local new_buffer_number = vim.fn.bufnr(new_buffer_name)
-    if vim.api.nvim_buf_get_option(new_buffer_number, 'buftype') ~= "" then
-        return -- do nothing if the new buffer is not a file
-    end
+    if not buffer_is_file(new_buffer_name) then return end
 
     -- close the current preview buffer and replace it with the new buffer
     close_preview_buffer()
     M.buffer_enter_preview(new_buffer_name)
+end
+
+M.buffer_modified_callback = function()
+    local modified_buffer_name = vim.fn.expand('<afile>')
+    debugging.print("buffer_modified_callback: " .. modified_buffer_name)
+
+    -- check if the modified buffer is a file
+    if not buffer_is_file(modified_buffer_name) then return end
+
+    -- exit preview if the modified buffer is the preview buffer
+    if modified_buffer_name == current_preview_buffer then
+        debugging.print("modified buffer is preview buffer")
+        M.buffer_exit_preview()
+    end
 end
 
 M.buffer_enter_preview = function(name)
