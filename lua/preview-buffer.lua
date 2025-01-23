@@ -5,7 +5,8 @@ local debugging = require("preview-buffer.debugging")
 local M = {
     -- Default options
     opts = {
-        debug = false -- Print debug messages
+        debug = false, -- Print debug messages
+        enable = true, -- Enable the plugin
     }
 }
 
@@ -18,9 +19,13 @@ local function register_user_commands()
 end
 
 M.setup = function(opts)
-    -- setup submodules
     opts = opts or {}
     M.opts = vim.tbl_deep_extend("force", M.opts, opts)
+    if not M.opts.enable then
+        return
+    end
+
+    -- setup submodules
     debugging.setup(M.opts)
     buffer.setup(M.opts)
     -- appearance.setup(M.opts)
