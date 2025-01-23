@@ -5,7 +5,7 @@ local debugging = require("preview-buffer.debugging")
 local M = {
     -- Default options
     opts = {
-        debug = true -- Print debug messages
+        debug = false -- Print debug messages
     }
 }
 
