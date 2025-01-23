@@ -1,11 +1,12 @@
 local debugging = require("preview-buffer.debugging")
 
-local M = { opts = {}, }
+local M = {}
 
 local current_preview_buffer = "NONE"
 
 M.setup = function(opts)
     M.opts = opts or {}
+    M.opts = vim.tbl_deep_extend("force", M.opts, opts)
     M.setup_autocmd()
 end
 
@@ -32,6 +33,7 @@ local function close_preview_buffer()
     -- close the buffer
     local number = vim.fn.bufnr(current_preview_buffer)
     if number ~= -1 then
+        -- https://github.com/folke/snacks.nvim/blob/main/docs/bufdelete.md
         Snacks.bufdelete.delete(number)
     end
 
