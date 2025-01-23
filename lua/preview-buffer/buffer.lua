@@ -58,7 +58,12 @@ M.buffer_add_callback = function()
 
     -- close the current preview buffer and replace it with the new buffer
     close_preview_buffer()
-    current_preview_buffer = new_buffer_name
+    M.buffer_enter_preview(new_buffer_name)
+end
+
+M.buffer_enter_preview = function(name)
+    debugging.print("buffer_enter_preview: " .. name)
+    current_preview_buffer = name
 end
 
 --- Let the preview buffer exit preview mode

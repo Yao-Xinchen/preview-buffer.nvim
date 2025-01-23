@@ -16,6 +16,11 @@ local function register_user_commands()
         buffer.buffer_exit_preview,
         { desc = "Let the preview buffer exit preview mode" }
     )
+    vim.api.nvim_create_user_command(
+        "BufferEnterPreview",
+        buffer.buffer_enter_preview,
+        { nargs = 1, desc = "Enter the buffer into preview mode" }
+    )
 end
 
 M.setup = function(opts)
