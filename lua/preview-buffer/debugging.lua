@@ -6,13 +6,13 @@ end
 
 M.print = function(...)
     if M.opts.debug then
-        vim.notify("preview-buffer: " .. ...)
+        print("preview-buffer: " .. ...)
     end
 end
 
 M.warn = function(...)
     if M.opts.debug then
-        vim.notify("preview-buffer: " .. ..., vim.log.levels.WARN)
+        warn("preview-buffer: " .. ...)
     end
 end
 
