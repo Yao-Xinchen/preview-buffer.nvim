@@ -9,12 +9,23 @@ local M = {
     }
 }
 
+local function register_user_commands()
+    vim.api.nvim_create_user_command(
+        "BufferExitPreview",
+        buffer.buffer_exit_preview,
+        { desc = "Let the preview buffer exit preview mode" }
+    )
+end
+
 M.setup = function(opts)
+    -- setup submodules
     opts = opts or {}
     M.opts = vim.tbl_deep_extend("force", M.opts, opts)
     debugging.setup(M.opts)
     buffer.setup(M.opts)
     -- appearance.setup(M.opts)
+
+    register_user_commands()
 end
 
 return M

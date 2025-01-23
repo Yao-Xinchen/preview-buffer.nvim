@@ -59,6 +59,12 @@ M.buffer_add_callback = function()
     current_preview_buffer = new_buffer_name
 end
 
+--- Let the preview buffer exit preview mode
+M.buffer_exit_preview = function()
+    local current_buffer_name = vim.api.nvim_buf_get_name(0)
+        current_preview_buffer = "NONE"
+end
+
 --- Get the current preview buffer
 M.current_preview_buffer = function()
     return current_preview_buffer
